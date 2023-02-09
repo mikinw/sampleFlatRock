@@ -77,10 +77,6 @@ class ItemDetailFragment : Fragment() {
     private fun updateContent() {
         toolbarLayout?.title = item?.content
 
-        // Show the placeholder content as text in a TextView.
-        item?.let {
-            itemDetailTextView.text = it.details
-        }
     }
 
     companion object {

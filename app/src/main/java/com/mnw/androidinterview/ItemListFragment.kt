@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipDescription
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.mnw.androidinterview.placeholder.PlaceholderContent;
 import com.mnw.androidinterview.databinding.FragmentItemListBinding
 import com.mnw.androidinterview.databinding.ItemListContentBinding
+import com.mnw.androidinterview.net.BooksApi
+import com.mnw.androidinterview.net.EndpointClient
+import com.mnw.androidinterview.placeholder.PlaceholderContent
+import kotlinx.coroutines.launch
 
 /**
  * A Fragment representing a list of Pings. This fragment
@@ -82,6 +89,8 @@ class ItemListFragment : Fragment() {
         val itemDetailFragmentContainer: View? = view.findViewById(R.id.item_detail_nav_container)
 
         setupRecyclerView(recyclerView, itemDetailFragmentContainer)
+
+        getBooksList()
     }
 
     private fun setupRecyclerView(
@@ -94,8 +103,39 @@ class ItemListFragment : Fragment() {
         )
     }
 
+    fun getBooksList() {
+        var retrofit = EndpointClient.getInstance()
+        var apiInterface = retrofit.create(BooksApi::class.java)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                try {
+                    val response = apiInterface.searchBooks("mongo")
+                    if (response.isSuccessful) {
+
+                        PlaceholderContent.clear()
+                        response.body()?.bookList?.forEach { book ->
+                            PlaceholderContent.addItem(PlaceholderContent.PlaceholderItem(book.thumbnail.substring(0,4), book.title))
+                        }
+
+                        (binding.itemList.adapter as SimpleItemRecyclerViewAdapter).notifyDataSetChanged()
+
+                    } else {
+                        Toast.makeText(
+                            context,
+                            response.errorBody().toString(),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } catch (Ex:Exception){
+                    Log.e("ASD Error", Ex.localizedMessage)
+                }
+            }
+        }
+
+    }
+
     class SimpleItemRecyclerViewAdapter(
-        private val values: List<PlaceholderContent.PlaceholderItem>,
+        private val values: MutableList<PlaceholderContent.PlaceholderItem>,
         private val itemDetailFragmentContainer: View?
     ) :
         RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
