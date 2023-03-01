@@ -16,12 +16,8 @@ object EndpointClient {
     }
 
     private val retrofit: Retrofit by lazy {
-        //        var mHttpLoggingInterceptor = HttpLoggingInterceptor()
-//            .setLevel(HttpLoggingInterceptor.Level.BODY)
-
         val okHttpClient = OkHttpClient
             .Builder()
-//            .addInterceptor(mHttpLoggingInterceptor)
             .addInterceptor(authInterceptor)
             .build()
 

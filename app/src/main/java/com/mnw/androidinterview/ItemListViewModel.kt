@@ -3,6 +3,7 @@ package com.mnw.androidinterview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mnw.androidinterview.model.BookRepo
+import com.mnw.androidinterview.model.RefreshUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -10,7 +11,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ItemListViewModel @Inject constructor(
-    private val repo: BookRepo
+    private val refreshUseCase: RefreshUseCase,
+    repo: BookRepo
 ): ViewModel() {
 
     init {
@@ -21,7 +23,7 @@ class ItemListViewModel @Inject constructor(
 
     fun getBookList() {
         viewModelScope.launch {
-            repo.refreshAll()
+            refreshUseCase()
         }
     }
 }
