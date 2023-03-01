@@ -42,7 +42,7 @@ class ItemListFragment : Fragment() {
         setupRecyclerView(recyclerView, itemDetailFragmentContainer)
 
         viewModel.bookList.observe(viewLifecycleOwner) {
-            (binding.itemList.adapter as RecyclerViewAdapter).setItems(it)
+            (binding.itemList.adapter as RecyclerViewAdapter).submitList(it)
         }
 
         viewModel.getBookList()

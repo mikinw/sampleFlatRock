@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -16,10 +18,21 @@ import com.mnw.androidinterview.databinding.ItemListContentBinding
 import com.mnw.androidinterview.model.Book
 
 
+private class DiffCallback : DiffUtil.ItemCallback<Book>() {
+
+    override fun areItemsTheSame(oldItem: Book, newItem: Book) =
+        oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: Book, newItem: Book) =
+        oldItem == newItem
+}
+
+
+
 class RecyclerViewAdapter (
     private val itemDetailFragmentContainer: View?
-) :
-    RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+) : ListAdapter<Book, RecyclerViewAdapter.ViewHolder>(DiffCallback()) {
+
 
     private var values: MutableList<Book> = ArrayList()
 
@@ -31,7 +44,7 @@ class RecyclerViewAdapter (
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
+        val item = currentList[position]
         holder.title.text = item.title
 
         if (!item.thumbnail.isNullOrBlank()) {
@@ -62,14 +75,6 @@ class RecyclerViewAdapter (
             }
 
         }
-    }
-
-    override fun getItemCount() = values.size
-
-    fun setItems(it: List<Book>) {
-        values = ArrayList(it)
-        notifyDataSetChanged()
-
     }
 
     inner class ViewHolder(binding: ItemListContentBinding) : RecyclerView.ViewHolder(binding.root) {
