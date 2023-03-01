@@ -15,14 +15,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mnw.androidinterview.ItemDetailFragment
 import com.mnw.androidinterview.R
 import com.mnw.androidinterview.databinding.ItemListContentBinding
+import com.mnw.androidinterview.model.Book
 import com.mnw.androidinterview.placeholder.PlaceholderContent
 
 
 class RecyclerViewAdapter (
-    private val values: MutableList<PlaceholderContent.PlaceholderItem>,
     private val itemDetailFragmentContainer: View?
 ) :
     RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+
+    private var values: MutableList<Book> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -39,7 +41,7 @@ class RecyclerViewAdapter (
         with(holder.itemView) {
             tag = item
             setOnClickListener { itemView ->
-                val item = itemView.tag as PlaceholderContent.PlaceholderItem
+                val item = itemView.tag as Book
                 val bundle = Bundle()
                 bundle.putString(
                     ItemDetailFragment.ARG_ITEM_ID,
@@ -52,21 +54,19 @@ class RecyclerViewAdapter (
                     itemView.findNavController().navigate(R.id.show_item_detail, bundle)
                 }
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                /**
-                 * Context click listener to handle Right click events
-                 * from mice and trackpad input to provide a more native
-                 * experience on larger screen devices
-                 */
-                setOnContextClickListener { v ->
-                    val item = v.tag as PlaceholderContent.PlaceholderItem
-                    Toast.makeText(
-                        v.context,
-                        "Context click of item " + item.id,
-                        Toast.LENGTH_LONG
-                    ).show()
-                    true
-                }
+            /**
+             * Context click listener to handle Right click events
+             * from mice and trackpad input to provide a more native
+             * experience on larger screen devices
+             */
+            setOnContextClickListener { v ->
+                val item = v.tag as PlaceholderContent.PlaceholderItem
+                Toast.makeText(
+                    v.context,
+                    "Context click of item " + item.id,
+                    Toast.LENGTH_LONG
+                ).show()
+                true
             }
 
             setOnLongClickListener { v ->
@@ -79,26 +79,23 @@ class RecyclerViewAdapter (
                     clipItem
                 )
 
-                if (Build.VERSION.SDK_INT >= 24) {
-                    v.startDragAndDrop(
-                        dragData,
-                        View.DragShadowBuilder(v),
-                        null,
-                        0
-                    )
-                } else {
-                    v.startDrag(
-                        dragData,
-                        View.DragShadowBuilder(v),
-                        null,
-                        0
-                    )
-                }
+                v.startDragAndDrop(
+                    dragData,
+                    View.DragShadowBuilder(v),
+                    null,
+                    0
+                )
             }
         }
     }
 
     override fun getItemCount() = values.size
+
+    fun setItems(it: List<Book>) {
+        values = ArrayList(it)
+        notifyDataSetChanged()
+
+    }
 
     inner class ViewHolder(binding: ItemListContentBinding) : RecyclerView.ViewHolder(binding.root) {
         val title: TextView = binding.textTitle
