@@ -2,4 +2,8 @@
     <string name="app_name">Android interview</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="book_cover">book cover</string>
+
+    <string name="network_refreshing">Refreshing…</string>
+    <string name="network_offline">You are currently offline</string>
+    <string name="network_error">Error while downloading</string>
 </resources>

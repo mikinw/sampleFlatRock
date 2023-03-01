@@ -8,6 +8,8 @@ import com.mnw.androidinterview.db.BookDao
 import com.mnw.androidinterview.db.BookRaw
 import com.mnw.androidinterview.model.Book
 import com.mnw.androidinterview.model.BookRepo
+import com.mnw.androidinterview.model.NetworkState
+import com.mnw.androidinterview.model.NetworkStateModel
 import com.mnw.androidinterview.net.BookData
 import com.mnw.androidinterview.net.BooksApi
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +27,7 @@ private fun BookRaw.asDomainModel(): Book {
 class BookRetrofitRoom @Inject constructor(
     private val booksApi: BooksApi,
     private val bookDao: BookDao,
+    private val networkState: NetworkStateModel,
 ): BookRepo {
 
     override val books: LiveData<List<Book>> = Transformations.map(bookDao.getAll()) {
@@ -34,6 +37,8 @@ class BookRetrofitRoom @Inject constructor(
     override suspend fun refreshAll() {
         withContext(Dispatchers.IO) {
             try {
+                networkState.requestState(NetworkState.REFRESHING)
+
                 val response = booksApi.searchBooks("mongo")
 
                 if (response.isSuccessful) {
@@ -46,12 +51,17 @@ class BookRetrofitRoom @Inject constructor(
                             bookDao.insertAll(it)
                         }
 
+                    networkState.requestState(NetworkState.NO_ACTIVITY)
+
                 } else {
 
                     Log.e("ASD", "could not fetch api: ${response.errorBody().toString()}")
+                    networkState.requestState(NetworkState.ERROR, response.errorBody().toString())
+
                 }
             } catch (ex: Exception) {
                 ex.printStackTrace()
+                networkState.requestState(NetworkState.ERROR, ex.localizedMessage)
 
             }
         }
