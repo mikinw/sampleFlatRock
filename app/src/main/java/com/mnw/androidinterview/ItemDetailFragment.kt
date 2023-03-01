@@ -11,13 +11,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.mnw.androidinterview.placeholder.PlaceholderContent
 import com.mnw.androidinterview.databinding.FragmentItemDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-/**
- * A fragment representing a single Item detail screen.
- * This fragment is either contained in a [ItemListFragment]
- * in two-pane mode (on larger screen devices) or self-contained
- * on handsets.
- */
+
+@AndroidEntryPoint
 class ItemDetailFragment : Fragment() {
 
     /**

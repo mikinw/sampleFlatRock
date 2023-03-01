@@ -9,13 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.mnw.androidinterview.app.RecyclerViewAdapter
 import com.mnw.androidinterview.databinding.FragmentItemListBinding
-import com.mnw.androidinterview.databinding.ItemListContentBinding
-import com.mnw.androidinterview.net.BooksApi
-import com.mnw.androidinterview.net.EndpointClient
-import com.mnw.androidinterview.placeholder.PlaceholderContent
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class ItemListFragment : Fragment() {
 
     private val viewModel: ItemListViewModel by viewModels()
