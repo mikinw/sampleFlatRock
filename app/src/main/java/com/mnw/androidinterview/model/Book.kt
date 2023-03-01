@@ -6,7 +6,7 @@ data class Book (
     val title: String,
     val authors: String? = null,
     val publisher: String? = null,
-    val rating: Int? = null,
+    val rating: String? = null,
     val year: Int? = null,
     val description: String? = null,
     val thumbnail: String? = null

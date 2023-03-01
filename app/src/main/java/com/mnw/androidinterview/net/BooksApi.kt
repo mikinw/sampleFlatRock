@@ -11,4 +11,8 @@ interface BooksApi {
     suspend fun searchBooks(
         @Path("search") search: String
     ): Response<Books>
+
+    @GET("/1.0/books/{isbn}")
+    suspend fun getDetails(@Path("isbn") isbn: String): Response<BookData>
+
 }

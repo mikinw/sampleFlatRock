@@ -9,20 +9,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.mnw.androidinterview.placeholder.PlaceholderContent
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.mnw.androidinterview.databinding.FragmentItemDetailBinding
+import com.mnw.androidinterview.model.Book
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class ItemDetailFragment : Fragment() {
 
-    /**
-     * The placeholder content this fragment is presenting.
-     */
-    private var item: PlaceholderContent.PlaceholderItem? = null
+    private val viewModel: DetailsViewModel by viewModels()
 
-    lateinit var itemDetailTextView: TextView
+    lateinit var itemTitleTextView: TextView
+    lateinit var itemAuthorTextView: TextView
+    lateinit var itemPublisherTextView: TextView
+    lateinit var itemRatingTextView: TextView
+    lateinit var itemYearTextView: TextView
+    lateinit var itemDesctiptionTextView: TextView
     private var toolbarLayout: CollapsingToolbarLayout? = null
 
     private var _binding: FragmentItemDetailBinding? = null
@@ -35,8 +40,8 @@ class ItemDetailFragment : Fragment() {
         if (event.action == DragEvent.ACTION_DROP) {
             val clipDataItem: ClipData.Item = event.clipData.getItemAt(0)
             val dragData = clipDataItem.text
-            item = PlaceholderContent.ITEM_MAP[dragData]
-            updateContent()
+            viewModel.setItemId(dragData.toString())
+
         }
         true
     }
@@ -46,10 +51,10 @@ class ItemDetailFragment : Fragment() {
 
         arguments?.let {
             if (it.containsKey(ARG_ITEM_ID)) {
-                // Load the placeholder content specified by the fragment
-                // arguments. In a real-world scenario, use a Loader
-                // to load content from a content provider.
-                item = PlaceholderContent.ITEM_MAP[it.getString(ARG_ITEM_ID)]
+                val id = it.getString(ARG_ITEM_ID)
+                if (!id.isNullOrEmpty()) {
+                    viewModel.setItemId(id)
+                }
             }
         }
     }
@@ -57,30 +62,62 @@ class ItemDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
         val rootView = binding.root
 
         toolbarLayout = binding.toolbarLayout
-        itemDetailTextView = binding.itemDetail
+        itemTitleTextView = binding.itemTitle!!
+        itemAuthorTextView = binding.itemAuthors!!
+        itemPublisherTextView = binding.itemPublisher!!
+        itemRatingTextView = binding.itemRating!!
+        itemYearTextView = binding.itemYear!!
+        itemDesctiptionTextView = binding.itemDescription!!
 
-        updateContent()
         rootView.setOnDragListener(dragListener)
 
         return rootView
     }
 
-    private fun updateContent() {
-        toolbarLayout?.title = item?.title
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.item.observe(viewLifecycleOwner) {
+            updateContent(it)
+        }
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as AppCompatActivity).supportActionBar?.show()
+    }
+
+    private fun updateContent(book: Book?) {
+
+        toolbarLayout?.title = book?.title
+
+        // Show the placeholder content as text in a TextView.
+        book?.let {
+            itemTitleTextView.text = it.description
+
+            binding.imageDetails?.let { imageView ->
+                Glide
+                    .with(requireContext())
+                    .load(it.thumbnail)
+                    .centerCrop()
+                    .into(imageView)
+
+            }
+        }
+    }
+
+
     companion object {
-        /**
-         * The fragment argument representing the item ID that this fragment
-         * represents.
-         */
         const val ARG_ITEM_ID = "item_id"
     }
 

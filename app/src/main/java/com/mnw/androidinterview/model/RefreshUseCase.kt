@@ -24,12 +24,7 @@ class RefreshUseCase constructor(
 
                 networkState.requestState(NetworkState.REFRESHING)
 
-                val refreshListJob = launch {
-                    repo.refreshAll()
-                }
-
-                refreshListJob.join()
-
+                repo.refreshAll()
 
                 networkState.requestState(NetworkState.NO_ACTIVITY)
 

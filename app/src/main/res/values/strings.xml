@@ -6,4 +6,9 @@
     <string name="network_refreshing">Refreshing…</string>
     <string name="network_offline">You are currently offline</string>
     <string name="network_error">Error while downloading</string>
+    <string name="publisher">Publisher</string>
+    <string name="rating">rating</string>
+    <string name="year">Year</string>
+    <string name="description">Description</string>
+    <string name="authors">Authors</string>
 </resources>

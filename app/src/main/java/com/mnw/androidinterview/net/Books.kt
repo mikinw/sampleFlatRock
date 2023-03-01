@@ -23,4 +23,15 @@ data class BookData(
     val title: String,
     @SerializedName("image")
     val thumbnail: String,
+    @SerializedName("authors")
+    val authors: String? = null,
+    @SerializedName("publisher")
+    val publisher: String? = null,
+    @SerializedName("rating")
+    val rating: String? = null,
+    @SerializedName("year")
+    val year: String? = null,
+    @SerializedName("desc")
+    val description: String? = null,
+
 )

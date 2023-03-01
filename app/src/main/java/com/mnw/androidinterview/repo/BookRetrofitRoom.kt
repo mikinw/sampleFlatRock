@@ -9,8 +9,6 @@ import com.mnw.androidinterview.db.BookDao
 import com.mnw.androidinterview.db.BookRaw
 import com.mnw.androidinterview.model.Book
 import com.mnw.androidinterview.model.BookRepo
-import com.mnw.androidinterview.model.NetworkState
-import com.mnw.androidinterview.model.NetworkStateModel
 import com.mnw.androidinterview.net.BookData
 import com.mnw.androidinterview.net.BooksApi
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,7 +18,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 private fun BookData.toDatabaseEntity(): BookRaw {
-    return BookRaw(this.id, this.title, null, null, null, null, null, this.thumbnail)
+    return BookRaw(this.id, this.title, this.authors, this.publisher, this.rating, this.year?.let { Integer.parseInt(it) }, this.description, this.thumbnail)
 }
 
 private fun BookRaw.asDomainModel(): Book {
@@ -53,14 +51,6 @@ class BookRetrofitRoom constructor(
             val response = booksApi.searchBooks("mongo")
 
             if (response.isSuccessful) {
-                response.body()?.bookList
-                    ?.map { book ->
-                        book.toDatabaseEntity()
-                    }
-                    ?.toList()
-                    ?.let {
-                        bookDao.insertAll(it)
-                    }
 
                 response.body()?.let { body ->
                     val freshIds = ArrayList<String>()
@@ -91,5 +81,30 @@ class BookRetrofitRoom constructor(
             Log.i("ASD", "refreshAll end")
         }
 
+    }
+
+    override suspend fun getDetails(id: String) {
+
+        withContext(dispatcher) {
+
+            val response = booksApi.getDetails(id)
+
+            if (response.isSuccessful) {
+                val details = response.body()
+                    ?: throw NetworkErrorException("Can't get detail for $id")
+
+                val bookRaw = details.toDatabaseEntity()
+
+                bookDao.insert(bookRaw)
+
+            } else {
+
+                Log.e("ASD", "could not fetch api: ${response.errorBody().toString()}")
+                throw NetworkErrorException(response.errorBody().toString())
+
+            }
+
+
+        }
     }
 }

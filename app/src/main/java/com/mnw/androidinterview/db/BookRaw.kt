@@ -11,7 +11,7 @@ data class BookRaw(
     val title: String,
     val authors: String?,
     val publisher: String?,
-    val rating: Int?,
+    val rating: String?,
     val year: Int?,
     val description: String?,
     val thumbnail: String?

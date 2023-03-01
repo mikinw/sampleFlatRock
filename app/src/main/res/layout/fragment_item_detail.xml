@@ -25,6 +25,15 @@
             app:toolbarId="@+id/toolbar"
             >
 
+            <ImageView
+                android:id="@+id/image_Details"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                app:layout_collapseMode="parallax"
+                />
+
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/detail_toolbar"
                 android:layout_width="match_parent"
@@ -43,32 +52,127 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
-
-        <TextView
-            android:id="@+id/item_detail"
-            style="?android:attr/textAppearanceLarge"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingStart="@dimen/container_horizontal_margin"
-            android:paddingTop="16dp"
-            android:paddingEnd="@dimen/container_horizontal_margin"
-            android:paddingBottom="16dp"
-            android:textIsSelectable="true"
-            tools:context="com.mnw.androidinterview.ItemDetailFragment"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/item_title"
+                style="?android:attr/textAppearanceLarge"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingTop="16dp"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:paddingBottom="16dp"
+                android:textIsSelectable="true"
+                tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:textIsSelectable="true"
+                android:text="@string/authors"
+                tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                />
+            <TextView
+                android:id="@+id/item_authors"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:textIsSelectable="true"
+                tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:textIsSelectable="true"
+                android:text="@string/publisher"
+                tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                />
+            <TextView
+                android:id="@+id/item_publisher"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:textIsSelectable="true"
+                tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/rating"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:textIsSelectable="true"
+                tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                />
+            <TextView
+                android:id="@+id/item_rating"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:textIsSelectable="true"
+                tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/year"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:textIsSelectable="true"
+                tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                />
+            <TextView
+                android:id="@+id/item_year"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:textIsSelectable="true"
+                tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/description"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:textIsSelectable="true"
+                tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                />
+            <TextView
+                android:id="@+id/item_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/container_horizontal_margin"
+                android:paddingEnd="@dimen/container_horizontal_margin"
+                android:textIsSelectable="true"
+                tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                />
+
+
+
+
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|start"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        app:layout_anchor="@+id/item_detail_scroll_view"
-        app:layout_anchorGravity="top|end"
-        app:srcCompat="@android:drawable/stat_notify_chat"
-        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
