@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Movie title"
+        tools:text="Book title"
         app:layout_constraintStart_toEndOf="@id/imageThumbnail"
         app:layout_constraintTop_toTopOf="parent"
         android:maxLines="1"

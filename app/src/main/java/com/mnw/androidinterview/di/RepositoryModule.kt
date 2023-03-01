@@ -14,7 +14,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindMovieRepo(movieRetrofitRoom: BookRetrofitRoom): BookRepo
+    abstract fun bindBookRepo(bookRetrofitRoom: BookRetrofitRoom): BookRepo
 
 
 }
