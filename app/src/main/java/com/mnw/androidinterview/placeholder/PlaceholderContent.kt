@@ -1,5 +1,6 @@
 package com.mnw.androidinterview.placeholder
 
+import android.graphics.Bitmap
 import java.util.ArrayList
 import java.util.HashMap
 
@@ -49,7 +50,9 @@ object PlaceholderContent {
     /**
      * A placeholder item representing a piece of content.
      */
-    data class PlaceholderItem(val id: String, val content: String) {
-        override fun toString(): String = content
-    }
+    data class PlaceholderItem(
+        val id: String,
+        val title: String,
+        val thumbnail: Bitmap? = null
+    )
 }

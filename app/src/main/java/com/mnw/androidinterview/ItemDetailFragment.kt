@@ -75,7 +75,7 @@ class ItemDetailFragment : Fragment() {
     }
 
     private fun updateContent() {
-        toolbarLayout?.title = item?.content
+        toolbarLayout?.title = item?.title
 
     }
 
