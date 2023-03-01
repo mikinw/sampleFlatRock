@@ -5,12 +5,12 @@ import com.google.gson.annotations.SerializedName
 data class Books(
 
     @SerializedName("page")
-    var page: Int,
+    val page: Int,
     @SerializedName("total")
-    var totalResults: Int,
+    val totalResults: Int,
 
     @SerializedName("books")
-    var bookList: List<BookData>? = null,
+    val bookList: List<BookData>? = null,
 
 
     )
@@ -18,9 +18,9 @@ data class Books(
 
 data class BookData(
     @SerializedName("isbn13")
-    var id: String,
+    val id: String,
     @SerializedName("title")
-    var title: String,
+    val title: String,
     @SerializedName("image")
-    var thumbnail: String,
+    val thumbnail: String,
 )

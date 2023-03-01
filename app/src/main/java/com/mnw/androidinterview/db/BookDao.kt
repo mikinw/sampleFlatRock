@@ -9,23 +9,23 @@ import androidx.room.*
 @Dao
 interface BookDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(movie: BookRaw)
+    fun insert(book: BookRaw)
 
-    @Query("DELETE FROM book WHERE id = :movieId")
-    suspend fun deleteById(movieId: String)
+    @Query("DELETE FROM book WHERE id = :bookId")
+    suspend fun deleteById(bookId: String)
 
     @Delete
-    suspend fun delete(movie: BookRaw)
+    suspend fun delete(book: BookRaw)
 
     @Query("SELECT * FROM book")
     fun getAll(): LiveData<List<BookRaw>>
-    @Query("SELECT * FROM book WHERE id = :movie")
-    fun getById(movie: Int): BookRaw
+    @Query("SELECT * FROM book WHERE id = :book")
+    fun getById(book: String): BookRaw
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(list: List<BookRaw>)
 
     @Query("DELETE FROM book WHERE id NOT IN (:freshIds)")
-    fun deleteExcept(freshIds: List<Int>): Int
+    fun deleteExcept(freshIds: List<String>): Int
 
 }

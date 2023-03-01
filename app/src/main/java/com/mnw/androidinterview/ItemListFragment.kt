@@ -62,8 +62,6 @@ class ItemListFragment : Fragment() {
         }
 
 
-        viewModel.getBookList()
-
     }
 
     private fun setupRecyclerView(
