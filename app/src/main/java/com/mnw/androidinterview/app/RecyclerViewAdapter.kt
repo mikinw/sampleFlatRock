@@ -1,22 +1,19 @@
 package com.mnw.androidinterview.app
 
-import android.content.ClipData
-import android.content.ClipDescription
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.mnw.androidinterview.ItemDetailFragment
 import com.mnw.androidinterview.R
 import com.mnw.androidinterview.databinding.ItemListContentBinding
 import com.mnw.androidinterview.model.Book
-import com.mnw.androidinterview.placeholder.PlaceholderContent
 
 
 class RecyclerViewAdapter (
@@ -36,7 +33,16 @@ class RecyclerViewAdapter (
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         holder.title.text = item.title
-        holder.thumbnail.setImageBitmap(item.thumbnail)
+
+        if (!item.thumbnail.isNullOrBlank()) {
+            Glide
+                .with(holder.itemView)
+                .load(item.thumbnail)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .centerCrop()
+                .into(holder.thumbnail)
+
+        }
 
         with(holder.itemView) {
             tag = item

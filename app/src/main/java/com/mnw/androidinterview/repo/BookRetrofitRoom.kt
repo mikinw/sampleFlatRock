@@ -15,11 +15,11 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 private fun BookData.toDatabaseEntity(): BookRaw {
-    return BookRaw(this.id, this.title, null, null, null, null, null, thumbnail = this.thumbnail)
+    return BookRaw(this.id, this.title, null, null, null, null, null, this.thumbnail)
 }
 
 private fun BookRaw.asDomainModel(): Book {
-    return Book(this.id, this.title, this.authors, this.publisher, this.rating, this.year, this.description, null)
+    return Book(this.id, this.title, this.authors, this.publisher, this.rating, this.year, this.description, this.thumbnail)
 }
 
 class BookRetrofitRoom @Inject constructor(
