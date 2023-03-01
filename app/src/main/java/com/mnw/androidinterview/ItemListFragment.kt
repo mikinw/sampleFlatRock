@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.mnw.androidinterview.app.RecyclerViewAdapter
 import com.mnw.androidinterview.databinding.FragmentItemListBinding
+import com.mnw.androidinterview.model.NetworkState
+import com.mnw.androidinterview.model.NetworkStateModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -21,6 +24,9 @@ class ItemListFragment : Fragment() {
     private var _binding: FragmentItemListBinding? = null
 
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var networkStateModel: NetworkStateModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +50,17 @@ class ItemListFragment : Fragment() {
         viewModel.bookList.observe(viewLifecycleOwner) {
             (binding.itemList.adapter as RecyclerViewAdapter).submitList(it)
         }
+
+        binding.swipeContainer.setOnRefreshListener {
+            viewModel.getBookList()
+        }
+
+        networkStateModel.networkState.observe(viewLifecycleOwner) {
+            if (it == NetworkState.NO_ACTIVITY) {
+                binding.swipeContainer.isRefreshing = false
+            }
+        }
+
 
         viewModel.getBookList()
 
