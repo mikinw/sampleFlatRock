@@ -3,15 +3,15 @@ package com.mnw.androidinterview
 import android.content.ClipData
 import android.os.Bundle
 import android.view.DragEvent
-import androidx.fragment.app.Fragment
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.mnw.androidinterview.databinding.FragmentItemDetailBinding
 import com.mnw.androidinterview.model.Book
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,18 +22,16 @@ class ItemDetailFragment : Fragment() {
 
     private val viewModel: DetailsViewModel by viewModels()
 
-    lateinit var itemTitleTextView: TextView
-    lateinit var itemAuthorTextView: TextView
-    lateinit var itemPublisherTextView: TextView
-    lateinit var itemRatingTextView: TextView
-    lateinit var itemYearTextView: TextView
-    lateinit var itemDesctiptionTextView: TextView
+    private lateinit var itemTitleTextView: TextView
+    private lateinit var itemAuthorTextView: TextView
+    private lateinit var itemPublisherTextView: TextView
+    private lateinit var itemRatingTextView: TextView
+    private lateinit var itemYearTextView: TextView
+    private lateinit var itemDescriptionTextView: TextView
     private var toolbarLayout: CollapsingToolbarLayout? = null
 
     private var _binding: FragmentItemDetailBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private val dragListener = View.OnDragListener { v, event ->
@@ -73,7 +71,7 @@ class ItemDetailFragment : Fragment() {
         itemPublisherTextView = binding.itemPublisher!!
         itemRatingTextView = binding.itemRating!!
         itemYearTextView = binding.itemYear!!
-        itemDesctiptionTextView = binding.itemDescription!!
+        itemDescriptionTextView = binding.itemDescription!!
 
         rootView.setOnDragListener(dragListener)
 

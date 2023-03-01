@@ -42,13 +42,13 @@ class BookRetrofitRoom constructor(
         it.map { raw -> raw.asDomainModel() }.toList()
     }
 
-    override suspend fun refreshAll() {
+    override suspend fun refreshAll(query: String) {
         withContext(dispatcher) {
 
             Log.i("ASD", "refreshAll start")
 
 
-            val response = booksApi.searchBooks("mongo")
+            val response = booksApi.searchBooks(query)
 
             if (response.isSuccessful) {
 

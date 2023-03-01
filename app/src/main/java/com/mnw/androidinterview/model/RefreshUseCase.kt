@@ -1,7 +1,6 @@
 package com.mnw.androidinterview.model
 
 
-import android.util.Log
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -17,14 +16,14 @@ class RefreshUseCase constructor(
     ) : this(repo, networkState, Dispatchers.Default)
 
 
-    suspend operator fun invoke() {
+    suspend operator fun invoke(query: String) {
         withContext(dispatcher) {
 
             try {
 
                 networkState.requestState(NetworkState.REFRESHING)
 
-                repo.refreshAll()
+                repo.refreshAll(query)
 
                 networkState.requestState(NetworkState.NO_ACTIVITY)
 

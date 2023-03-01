@@ -8,7 +8,7 @@ interface BookRepo {
 
     val books: LiveData<List<Book>>
 
-    suspend fun refreshAll()
+    suspend fun refreshAll(query: String)
 
     suspend fun getDetails(id: String)
 

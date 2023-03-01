@@ -15,15 +15,24 @@ class ItemListViewModel @Inject constructor(
     repo: BookRepo
 ): ViewModel() {
 
-    init {
-        getBookList()
-    }
-
     val bookList = repo.books
 
-    fun getBookList() {
-        viewModelScope.launch {
-            refreshUseCase()
+    var query: String = ""
+
+    fun refresh() {
+        if (query.isNotBlank()) {
+            viewModelScope.launch {
+                refreshUseCase(query)
+            }
         }
     }
+
+    fun setQueryString(query: String?) {
+        if (!query.isNullOrBlank()) {
+            this.query = query
+
+            refresh()
+        }
+    }
+
 }
