@@ -12,10 +12,12 @@ import com.mnw.androidinterview.db.SavedBookRaw
 import com.mnw.androidinterview.model.Book
 import com.mnw.androidinterview.model.BookRepo
 import com.mnw.androidinterview.net.BookData
+import com.mnw.androidinterview.net.Books
 import com.mnw.androidinterview.net.BooksApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -62,7 +64,43 @@ class BookRetrofitRoom constructor(
         savedBookDao.delete(SavedBookRaw(book))
     }
 
+    override suspend fun loadMore(query: String) {
+        withContext(dispatcher) {
 
+            val nextPage = (books.value?.size ?: 10) / 10
+
+            val response = booksApi.searchBooks(query, nextPage + 1)
+
+            if (response.isSuccessful) {
+
+                processResponse(response)
+
+            } else {
+
+                Log.e("ASD", "could not fetch api: ${response.errorBody().toString()}")
+                throw NetworkErrorException(response.errorBody().toString())
+
+
+            }
+
+        }
+    }
+
+    private fun processResponse(response: Response<Books>) {
+        response.body()?.let { body ->
+
+            body.bookList
+
+                ?.map { book ->
+                    book.toDatabaseEntity()
+                }
+                ?.toList()
+                ?.let {
+                    bookDao.insertAll(it)
+                }
+
+        }
+    }
 
     override suspend fun refreshAll(query: String) {
         withContext(dispatcher) {
@@ -71,23 +109,10 @@ class BookRetrofitRoom constructor(
 
             if (response.isSuccessful) {
 
-                response.body()?.let { body ->
-                    val freshIds = ArrayList<String>()
+                bookDao.deleteExcept(emptyList())
 
-                    body.bookList
+                processResponse(response)
 
-                        ?.map { book ->
-                            freshIds.add(book.id)
-                            book.toDatabaseEntity()
-                        }
-                        ?.toList()
-                        ?.let {
-                            bookDao.insertAll(it)
-                        }
-
-                    // TODO [mnw] 2023. 03. 02. except saved
-                    bookDao.deleteExcept(freshIds)
-                }
 
             } else {
 
@@ -131,3 +156,4 @@ class BookRetrofitRoom constructor(
 
 
 }
+

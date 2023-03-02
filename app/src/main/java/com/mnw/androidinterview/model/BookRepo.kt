@@ -15,4 +15,5 @@ interface BookRepo {
     suspend fun unsave(book: Book)
 
     val saved: LiveData<List<Book>>
+    suspend fun loadMore(query: String)
 }

@@ -3,6 +3,7 @@ package com.mnw.androidinterview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mnw.androidinterview.model.BookRepo
+import com.mnw.androidinterview.model.MoreUseCase
 import com.mnw.androidinterview.model.RefreshUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,6 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ItemListViewModel @Inject constructor(
     private val refreshUseCase: RefreshUseCase,
+    private val moreUseCase: MoreUseCase,
     repo: BookRepo
 ): ViewModel() {
 
@@ -27,6 +29,12 @@ class ItemListViewModel @Inject constructor(
             return true
         }
         return false
+    }
+
+    fun more() {
+        viewModelScope.launch {
+            moreUseCase(query)
+        }
     }
 
     fun setQueryString(query: String?) {
