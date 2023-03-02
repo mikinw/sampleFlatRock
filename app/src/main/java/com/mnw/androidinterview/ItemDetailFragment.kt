@@ -73,6 +73,13 @@ class ItemDetailFragment : Fragment() {
         itemYearTextView = binding.itemYear!!
         itemDescriptionTextView = binding.itemDescription!!
 
+        binding.saveButton!!.setOnClickListener {
+            viewModel.save()
+        }
+        binding.unsaveButton!!.setOnClickListener {
+            viewModel.unsave()
+        }
+
         rootView.setOnDragListener(dragListener)
 
         return rootView
@@ -82,6 +89,22 @@ class ItemDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.item.observe(viewLifecycleOwner) {
             updateContent(it)
+            updateButtons(it, viewModel.savedList.value ?: emptyList())
+        }
+
+        viewModel.savedList.observe(viewLifecycleOwner) {
+            val book = viewModel.item.value
+            updateButtons(book, it)
+        }
+    }
+
+    private fun updateButtons(currentBook: Book?, it: List<Book>) {
+        if (currentBook != null && it.contains(currentBook)) {
+            binding.saveButton?.visibility = View.GONE
+            binding.unsaveButton?.visibility = View.VISIBLE
+        } else {
+            binding.saveButton?.visibility = View.VISIBLE
+            binding.unsaveButton?.visibility = View.GONE
         }
     }
 

@@ -59,19 +59,39 @@
             android:orientation="vertical"
             >
 
-            <TextView
-                android:id="@+id/item_title"
-                style="?android:attr/textAppearanceLarge"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="@dimen/container_horizontal_margin"
-                android:paddingTop="16dp"
-                android:paddingEnd="@dimen/container_horizontal_margin"
-                android:paddingBottom="16dp"
-                android:textIsSelectable="true"
-                android:maxLines="2"
-                tools:context="com.mnw.androidinterview.ItemDetailFragment"
-                />
+
+
+                <Button
+                    android:id="@+id/save_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save"
+                    android:layout_marginHorizontal="@dimen/container_horizontal_margin"
+                    />
+
+                <Button
+                    android:id="@+id/unsave_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unsave"
+                    android:layout_marginHorizontal="@dimen/container_horizontal_margin"
+                    />
+
+                <TextView
+                    android:id="@+id/item_title"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="@dimen/container_horizontal_margin"
+                    android:paddingEnd="@dimen/container_horizontal_margin"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:textIsSelectable="true"
+                    android:maxLines="2"
+                    tools:context="com.mnw.androidinterview.ItemDetailFragment"
+                    />
+
+
 
 
             <TextView

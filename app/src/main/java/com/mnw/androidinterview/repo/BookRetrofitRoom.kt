@@ -4,11 +4,11 @@ package com.mnw.androidinterview.repo
 import android.accounts.NetworkErrorException
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
 import com.mnw.androidinterview.db.BookDao
 import com.mnw.androidinterview.db.BookRaw
 import com.mnw.androidinterview.db.SavedBookDao
+import com.mnw.androidinterview.db.SavedBookRaw
 import com.mnw.androidinterview.model.Book
 import com.mnw.androidinterview.model.BookRepo
 import com.mnw.androidinterview.net.BookData
@@ -24,6 +24,9 @@ private fun BookData.toDatabaseEntity(): BookRaw {
 }
 
 private fun BookRaw.asDomainModel(): Book {
+    return Book(this.id, this.title, this.authors, this.publisher, this.rating, this.year, this.description, this.thumbnail)
+}
+private fun SavedBookRaw.asDomainModel(): Book {
     return Book(this.id, this.title, this.authors, this.publisher, this.rating, this.year, this.description, this.thumbnail)
 }
 
@@ -45,8 +48,18 @@ class BookRetrofitRoom constructor(
     override val books: LiveData<List<Book>> = Transformations.map(bookDao.getAll()) {
         it.map { raw -> raw.asDomainModel() }
     }
-    override val saved: LiveData<List<Book>> = Transformations.map(bookDao.getAllSaved()) {
+
+    override val saved: LiveData<List<Book>> = Transformations.map(savedBookDao.getAll()) {
         it.map { raw -> raw.asDomainModel() }
+    }
+
+
+    override suspend fun save(book: Book) {
+        savedBookDao.insert(SavedBookRaw(book))
+    }
+
+    override suspend fun unsave(book: Book) {
+        savedBookDao.delete(SavedBookRaw(book))
     }
 
 
@@ -72,9 +85,9 @@ class BookRetrofitRoom constructor(
                             bookDao.insertAll(it)
                         }
 
+                    // TODO [mnw] 2023. 03. 02. except saved
                     bookDao.deleteExcept(freshIds)
                 }
-
 
             } else {
 
@@ -114,4 +127,7 @@ class BookRetrofitRoom constructor(
 
         }
     }
+
+
+
 }
