@@ -53,10 +53,13 @@ class ItemListFragment : Fragment() {
         }
 
         binding.swipeContainer.setOnRefreshListener {
-            viewModel.refresh()
+            if (!viewModel.refresh()) {
+                binding.swipeContainer.isRefreshing = false
+
+            }
         }
 
-        binding.searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.setQueryString(query)
                 return true

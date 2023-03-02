@@ -42,9 +42,14 @@ class NetworkStateFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         bottomSheetBehavior = BottomSheetBehavior.from(binding.networkStateRoot.parent as FragmentContainerView)
 
-        bottomSheetBehavior.addBottomSheetCallback(disableUserInteraction)
+        bottomSheetBehavior.isDraggable = false
 
-        networkStateModel.networkState.observe(viewLifecycleOwner, setViewState)
+        networkStateModel.networkState.observe(viewLifecycleOwner) {
+            setViewState(it)
+            view.postDelayed({
+                setViewState(networkStateModel.networkState.value!!)
+            }, 500)
+        }
     }
 
 
@@ -77,14 +82,4 @@ class NetworkStateFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private val disableUserInteraction = object : BottomSheetBehavior.BottomSheetCallback() {
-        override fun onStateChanged(bottomSheet: View, newState: Int) {
-            if (newState == BottomSheetBehavior.STATE_DRAGGING || newState == BottomSheetBehavior.STATE_EXPANDED || newState == BottomSheetBehavior.STATE_HALF_EXPANDED) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED;
-            }
-        }
-
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-
-    }
 }

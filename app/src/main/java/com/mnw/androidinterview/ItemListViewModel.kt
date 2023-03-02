@@ -19,12 +19,14 @@ class ItemListViewModel @Inject constructor(
 
     var query: String = ""
 
-    fun refresh() {
+    fun refresh(): Boolean {
         if (query.isNotBlank()) {
             viewModelScope.launch {
                 refreshUseCase(query)
             }
+            return true
         }
+        return false
     }
 
     fun setQueryString(query: String?) {
