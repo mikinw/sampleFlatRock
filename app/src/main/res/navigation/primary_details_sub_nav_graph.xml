@@ -13,6 +13,13 @@
             android:name="item_id"
             android:defaultValue=""
             app:argType="string" />
+        <action
+            android:id="@+id/action_fragment_item_detail_to_savedListFragment"
+            app:destination="@id/savedListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/savedListFragment"
+        android:name="com.mnw.androidinterview.SavedListFragment"
+        android:label="SavedListFragment" />
 
 </navigation>

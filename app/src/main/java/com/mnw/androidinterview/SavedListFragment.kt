@@ -1,15 +1,14 @@
 package com.mnw.androidinterview
 
+
+
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.mnw.androidinterview.app.RecyclerViewAdapter
@@ -21,9 +20,9 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class ItemListFragment : Fragment() {
+class SavedListFragment : Fragment() {
 
-    private val viewModel: ItemListViewModel by viewModels()
+    private val viewModel: SavedListViewModel by viewModels()
 
     private var _binding: FragmentItemListBinding? = null
 
@@ -31,11 +30,6 @@ class ItemListFragment : Fragment() {
 
     @Inject
     lateinit var networkStateModel: NetworkStateModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +44,8 @@ class ItemListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.searchView.visibility = View.GONE
+
         val recyclerView: RecyclerView = binding.itemList
 
         val itemDetailFragmentContainer: View? = view.findViewById(R.id.item_detail_nav_container)
@@ -61,45 +57,10 @@ class ItemListFragment : Fragment() {
         }
 
         binding.swipeContainer.setOnRefreshListener {
-            if (!viewModel.refresh()) {
-                binding.swipeContainer.isRefreshing = false
-
-            }
+            binding.swipeContainer.isRefreshing = false
         }
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.setQueryString(query)
-                return true
-            }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-        })
-
-        networkStateModel.networkState.observe(viewLifecycleOwner) {
-            if (it == NetworkState.NO_ACTIVITY) {
-                binding.swipeContainer.isRefreshing = false
-            }
-        }
-
-        val menuHost: MenuHost = requireActivity()
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.list_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.menu_saved -> {
-                        findNavController().navigate(R.id.savedListFragment, null)
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
     }
 
