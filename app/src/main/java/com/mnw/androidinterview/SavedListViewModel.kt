@@ -11,23 +11,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SavedListViewModel @Inject constructor(
-    private val refreshUseCase: RefreshUseCase,
     repo: BookRepo
 ): ViewModel() {
 
-    val bookList = repo.books
+    val bookList = repo.saved
 
-    var query: String = "mongo"
-
-    fun refresh(): Boolean {
-        if (query.isNotBlank()) {
-            viewModelScope.launch {
-                refreshUseCase(query)
-            }
-            return true
-        }
-        return false
-    }
 
 }
 

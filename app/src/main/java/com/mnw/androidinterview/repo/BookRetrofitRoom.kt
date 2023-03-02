@@ -4,9 +4,11 @@ package com.mnw.androidinterview.repo
 import android.accounts.NetworkErrorException
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
 import com.mnw.androidinterview.db.BookDao
 import com.mnw.androidinterview.db.BookRaw
+import com.mnw.androidinterview.db.SavedBookDao
 import com.mnw.androidinterview.model.Book
 import com.mnw.androidinterview.model.BookRepo
 import com.mnw.androidinterview.net.BookData
@@ -29,18 +31,25 @@ private fun BookRaw.asDomainModel(): Book {
 class BookRetrofitRoom constructor(
     private val booksApi: BooksApi,
     private val bookDao: BookDao,
+    private val savedBookDao: SavedBookDao,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ): BookRepo {
 
     @Inject constructor(
         booksApi: BooksApi,
         bookDao: BookDao,
-    ) : this(booksApi, bookDao, Dispatchers.IO)
+        savedBookDao: SavedBookDao,
+    ) : this(booksApi, bookDao, savedBookDao, Dispatchers.IO)
 
 
     override val books: LiveData<List<Book>> = Transformations.map(bookDao.getAll()) {
-        it.map { raw -> raw.asDomainModel() }.toList()
+        it.map { raw -> raw.asDomainModel() }
     }
+    override val saved: LiveData<List<Book>> = Transformations.map(bookDao.getAllSaved()) {
+        it.map { raw -> raw.asDomainModel() }
+    }
+
+
 
     override suspend fun refreshAll(query: String) {
         withContext(dispatcher) {

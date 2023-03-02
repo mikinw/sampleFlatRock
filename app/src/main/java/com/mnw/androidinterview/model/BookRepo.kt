@@ -12,4 +12,5 @@ interface BookRepo {
 
     suspend fun getDetails(id: String): Book
 
+    val saved: LiveData<List<Book>>
 }

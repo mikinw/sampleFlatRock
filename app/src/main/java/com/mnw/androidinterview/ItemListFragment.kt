@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
@@ -93,7 +94,8 @@ class ItemListFragment : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.menu_saved -> {
-                        findNavController().navigate(R.id.savedListFragment, null)
+
+                        findNavController().navigate(R.id.savedListFragment)
                         true
                     }
                     else -> false

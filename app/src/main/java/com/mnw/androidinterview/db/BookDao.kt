@@ -24,6 +24,8 @@ interface BookDao {
     fun getAll(): LiveData<List<BookRaw>>
     @Query("SELECT * FROM book WHERE id = :bookId")
     fun getById(bookId: String): BookRaw
+    @Query("SELECT * FROM book WHERE id IN (SELECT * FROM savedbook)")
+    fun getAllSaved(): LiveData<List<BookRaw>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(list: List<BookRaw>)
