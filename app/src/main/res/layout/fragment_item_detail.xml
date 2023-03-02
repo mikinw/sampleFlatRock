@@ -68,6 +68,7 @@
                 android:paddingEnd="@dimen/container_horizontal_margin"
                 android:paddingBottom="16dp"
                 android:textIsSelectable="true"
+                android:maxLines="2"
                 tools:context="com.mnw.androidinterview.ItemDetailFragment"
                 />
 
@@ -75,10 +76,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="16dp"
                 android:paddingStart="@dimen/container_horizontal_margin"
                 android:paddingEnd="@dimen/container_horizontal_margin"
-                android:textIsSelectable="true"
                 android:text="@string/authors"
+                android:textIsSelectable="true"
                 tools:context="com.mnw.androidinterview.ItemDetailFragment"
                 />
             <TextView
@@ -94,6 +97,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="16dp"
                 android:paddingStart="@dimen/container_horizontal_margin"
                 android:paddingEnd="@dimen/container_horizontal_margin"
                 android:textIsSelectable="true"
@@ -113,7 +118,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                style="?android:attr/textAppearanceMedium"
                 android:text="@string/rating"
+                android:layout_marginTop="16dp"
                 android:paddingStart="@dimen/container_horizontal_margin"
                 android:paddingEnd="@dimen/container_horizontal_margin"
                 android:textIsSelectable="true"
@@ -132,7 +139,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                style="?android:attr/textAppearanceMedium"
                 android:text="@string/year"
+                android:layout_marginTop="16dp"
                 android:paddingStart="@dimen/container_horizontal_margin"
                 android:paddingEnd="@dimen/container_horizontal_margin"
                 android:textIsSelectable="true"
@@ -151,7 +160,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                style="?android:attr/textAppearanceMedium"
                 android:text="@string/description"
+                android:layout_marginTop="16dp"
                 android:paddingStart="@dimen/container_horizontal_margin"
                 android:paddingEnd="@dimen/container_horizontal_margin"
                 android:textIsSelectable="true"

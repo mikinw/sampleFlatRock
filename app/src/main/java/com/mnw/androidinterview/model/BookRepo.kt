@@ -10,6 +10,6 @@ interface BookRepo {
 
     suspend fun refreshAll(query: String)
 
-    suspend fun getDetails(id: String)
+    suspend fun getDetails(id: String): Book
 
 }

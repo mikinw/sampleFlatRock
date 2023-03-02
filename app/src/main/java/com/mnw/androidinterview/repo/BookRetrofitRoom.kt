@@ -45,9 +45,6 @@ class BookRetrofitRoom constructor(
     override suspend fun refreshAll(query: String) {
         withContext(dispatcher) {
 
-            Log.i("ASD", "refreshAll start")
-
-
             val response = booksApi.searchBooks(query)
 
             if (response.isSuccessful) {
@@ -78,14 +75,13 @@ class BookRetrofitRoom constructor(
 
             }
 
-            Log.i("ASD", "refreshAll end")
         }
 
     }
 
-    override suspend fun getDetails(id: String) {
+    override suspend fun getDetails(id: String): Book {
 
-        withContext(dispatcher) {
+        return withContext(dispatcher) {
 
             val response = booksApi.getDetails(id)
 
@@ -95,7 +91,9 @@ class BookRetrofitRoom constructor(
 
                 val bookRaw = details.toDatabaseEntity()
 
-                bookDao.insert(bookRaw)
+                bookDao.update(bookRaw)
+
+                bookRaw.asDomainModel()
 
             } else {
 

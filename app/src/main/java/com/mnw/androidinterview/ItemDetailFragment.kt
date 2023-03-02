@@ -101,7 +101,13 @@ class ItemDetailFragment : Fragment() {
 
         // Show the placeholder content as text in a TextView.
         book?.let {
-            itemTitleTextView.text = it.description
+            itemTitleTextView.text = it.title
+
+            itemAuthorTextView.text = it.authors ?: "n/a"
+            itemPublisherTextView.text = it.publisher ?: "n/a"
+            itemRatingTextView.text = it.rating ?: "n/a"
+            itemYearTextView.text = it.year?.toString() ?: "n/a"
+            itemDescriptionTextView.text = it.description ?: "n/a"
 
             binding.imageDetails?.let { imageView ->
                 Glide
